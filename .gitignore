@@ -6,3 +6,5 @@ venv
 secrets.py
 taco_base.db
 *.db-journal
+.env
+

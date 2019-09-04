@@ -1,9 +1,14 @@
 from telegram.ext import Updater
-from secrets import bot_token
 from handlers import start_handler, help_handler, chat_reply_handler, new_chat_handler, self_kick_handler,\
     init_taco_handler, my_tacos_handler, taco_top_handler
 import logging
+from decouple import config
 import os
+
+
+bot_token = config('BOT_TOKEN', default='token')
+
+webhook_url = config('WEBHOOK_URL', default='url')
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',                   # logging > console
@@ -31,7 +36,7 @@ if __name__ == '__main__':                                                      
                           port=8080,
                           url_path=bot_token)
 
-        upd.bot.set_webhook('https://tacobot.getalts.club/' + bot_token)         # you obviously need to change this url
+        upd.bot.set_webhook(webhook_url + bot_token)         # you obviously need to change this url
 
     upd.idle()
 
