@@ -107,7 +107,6 @@ chat_reply_handler = MessageHandler(
 
 def taco_mention_callback(update: Update, context: CallbackContext):
     """ callback for taco-transfer by mention """
-    print("taco transfer")
 
     cid = get_cid(update)
     store_name(update)
@@ -128,10 +127,9 @@ def taco_mention_callback(update: Update, context: CallbackContext):
 taco_mention_handler = MessageHandler(
     callback=taco_mention_callback,
     filters=Filters.group
-    # filters=Filters.group
-    # & filter_taco
-    # & (
-    #     Filters.entity(MessageEntity.MENTION)
-    #     | Filters.entity(MessageEntity.TEXT_MENTION)
-    # )
+    & filter_taco
+    & (
+        Filters.entity(MessageEntity.MENTION)
+        | Filters.entity(MessageEntity.TEXT_MENTION)
+    )
 )
