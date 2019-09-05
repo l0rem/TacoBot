@@ -35,7 +35,8 @@ if not Tacos.table_exists():                                                    
 
 class Usernames(Model):                                                       # username-model is here only for /tacotop
     uid = IntegerField()
-    name = TextField()
+    name = CharField()
+    username = CharField()
 
     class Meta:
         database = db

@@ -2,7 +2,7 @@ from telegram.ext import Updater
 import logging
 from decouple import config
 
-from handlers.basic import help_handler, start_handler
+from handlers.basic import help_handler, start_handler, store_names_handler
 from handlers.leaderboards import taco_top_handler, my_tacos_handler
 from handlers.setup import init_taco_handler, self_kick_handler, new_chat_handler
 from handlers.tacotransfers import chat_reply_handler, taco_mention_handler
@@ -22,6 +22,9 @@ upd = Updater(bot_token,                                                        
 dp = upd.dispatcher
 
 if __name__ == '__main__':                                                               # adding handlers to dispatcher
+    # Always execute first, synchronously
+    dp.add_handler(store_names_handler, group=-1)
+
     dp.add_handler(start_handler)
     dp.add_handler(help_handler)
     dp.add_handler(new_chat_handler)
