@@ -12,6 +12,8 @@ bot_token = config('BOT_TOKEN', default='token')
 
 webhook_url = config('WEBHOOK_URL', default='url')
 
+env = config('ENV', default='dev')
+
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',                   # logging > console
                     level=logging.getLevelName(config('LOG_LEVEL', default='DEBUG')))
@@ -30,7 +32,7 @@ if __name__ == '__main__':                                                      
     dp.add_handler(my_tacos_handler)
     dp.add_handler(taco_top_handler)
 
-    if os.name == 'nt':
+    if env == 'dev':
         upd.start_polling()
     else:
 
@@ -38,7 +40,7 @@ if __name__ == '__main__':                                                      
                           port=8080,
                           url_path=bot_token)
 
-        upd.bot.set_webhook(webhook_url + bot_token)         # you obviously need to change this url
+        upd.bot.set_webhook(webhook_url + bot_token)         
 
     logging.info("Ready and listening for updates...")
     upd.idle()

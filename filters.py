@@ -1,8 +1,9 @@
 from telegram.ext import BaseFilter
 from dbmodels import Chats, Tacos
 from phrases import taco_emoji
+from decouple import config
 
-bot_first_name = 'TacoBot'
+bot_first_name = config('BOT_FIRST_NAME', default='TacoBot')
 
 
 class FilterReply(BaseFilter):                                                                      # filter for replies
