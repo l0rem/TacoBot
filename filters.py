@@ -1,8 +1,11 @@
+from decouple import config
+from telegram import Message
 from telegram.ext import BaseFilter
 from dbmodels import Chats, Tacos
 from phrases import taco_emoji
+from tools import ensure_username
 
-bot_first_name = 'TacoBot'
+bot_username = ensure_username(config('BOT_USERNAME', default='TacoBot'))
 
 
 class FilterReply(BaseFilter):                                                                      # filter for replies
@@ -14,8 +17,8 @@ filter_reply = FilterReply()
 
 
 class FilterTaco(BaseFilter):                                                         # filter for taco-emoji in message
-    def filter(self, message):
-        return taco_emoji in message.text
+    def filter(self, message: Message):
+        return taco_emoji in message.text if message.text else False
 
 
 filter_taco = FilterTaco()
@@ -24,7 +27,7 @@ filter_taco = FilterTaco()
 class FilterAdded(BaseFilter):                                         # filter for message, that bot was added to group
     def filter(self, message):
         for member in message.new_chat_members:
-            if member.first_name == bot_first_name:
+            if ensure_username(member.username).lower() == bot_username.lower():
                 return True
         return False
 
@@ -36,7 +39,7 @@ class FilterSelfKicked(BaseFilter):                                   # filter f
     def filter(self, message):
         if message.left_chat_member is None:
             return False
-        if message.left_chat_member.first_name == bot_first_name:
+        if ensure_username(message.left_chat_member.username) == bot_username:
             return True
         return False
 
