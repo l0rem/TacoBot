@@ -7,14 +7,15 @@ This is a port of HeyTacoBot (Slack only) for Telegram.
 SSH into your VPS with DOKKU installed on it and:
 1. dokku apps:create [APP-NAME]
 2. dokku config:set --no-restart [APP-NAME] BOT_TOKEN=[YOUR-BOT-TOKEN]
-3. dokku config:set --no-restart [APP-NAME] WEBHOOK_URL=[YOUR-WEBHOOK-URL]
-From local machine
+3. dokku config:set --no-restart [APP-NAME] WEBHOOK_URL=[YOUR-WEBHOOK-URL]<br/>
+From local machine<br/>
 4. git init
 5. git clone git@github.com:l0rem/TacoBot.git
 6. git remote add dokku dokku@dokku.me:[APP-NAME]
-6. git push dokku master
-7. dokku letsencrypt [APP-NAME]
-7. dokku proxy:ports-set [APP-NAME] https:443:8080
+7. git push dokku master<br/>
+Again on VPS<br/>
+8. dokku letsencrypt [APP-NAME]
+9. dokku proxy:ports-set [APP-NAME] https:443:8080
 
 
 ## Usage
