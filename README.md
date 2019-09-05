@@ -5,17 +5,19 @@ This is a port of HeyTacoBot (Slack only) for Telegram.
 ## Installation
 
 SSH into your VPS with DOKKU installed on it:
-1. dokku apps:create <APP-NAME>
-2. dokku config:set --no-restart <APP-NAME> BOT_TOKEN=<YOUR-BOT-TOKEN>
-3. dokku config:set --no-restart <APP-NAME> WEBHOOK_URL=<YOUR-WEBHOOK-URL>
-4. dokku buildpacks:add <APP-NAME>  https://github.com/heroku/heroku-buildpack-python.git
+1. dokku apps:create [APP-NAME]
+2. dokku config:set --no-restart [APP-NAME] BOT_TOKEN=[YOUR-BOT-TOKEN]
+3. dokku config:set --no-restart [APP-NAME] WEBHOOK_URL=[YOUR-WEBHOOK-URL]
+4. dokku buildpacks:add [APP-NAME]  https://github.com/heroku/heroku-buildpack-python.git
 5. git clone git@github.com:l0rem/TacoBot.git
 6. git push dokku master
-6. dokku letsencrypt <APP-NAME>
+6. dokku letsencrypt [APP-NAME]
 
 ## Usage
 
-Send /start to bot in order to proceed.
+Send /start to bot.
+
+Add it to your group and give it admin rights, so that it will be able to access messages.
 
 ## Contributing
 
@@ -28,5 +30,5 @@ Send /start to bot in order to proceed.
 ## Credits
 
 python-telegram-bot 
-dokku 
+DOKKU 
 HeyTacoBot
