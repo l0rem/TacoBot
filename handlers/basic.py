@@ -1,8 +1,8 @@
 from telegram import ParseMode
-from telegram.ext import Filters, CommandHandler
+from telegram.ext import Filters, CommandHandler, MessageHandler
 
 from phrases import start_phrase, help_phrase
-from tools import get_uid
+from tools import get_uid, store_name
 
 
 def start_callback(update, context):
@@ -33,3 +33,11 @@ def help_callback(update, context):
 help_handler = CommandHandler('help',
                               callback=help_callback,
                               filters=Filters.private)
+
+
+def store_names_callback(update, context):
+    print('storing name...')
+    store_name(update)
+
+
+store_names_handler = MessageHandler(Filters.all, callback=store_names_callback)

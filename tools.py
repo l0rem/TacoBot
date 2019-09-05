@@ -1,3 +1,5 @@
+from telegram import Update
+
 from dbmodels import Usernames
 
 
@@ -11,7 +13,7 @@ def get_cid(update):
     return update.effective_message.chat.id
 
 
-def store_name(update):
+def store_name(update: Update):
     """ this function is here only for /tacotop """
 
     username = Usernames.select().where(Usernames.uid == get_uid(update))
@@ -29,8 +31,11 @@ def store_name(update):
     else:
         name = '@' + user.username
 
-    Usernames.create(uid=get_uid(update),
-                     name=name)
+    Usernames.create(
+        uid=get_uid(update),
+        name=name,
+        # TODO: this might fail due to none ref exc
+        username=update.effective_message.from_user.username.lower())
     return name
 
 
@@ -43,9 +48,17 @@ def resolve_name(uid):
         return uid
 
 
+def resolve_uid(username):
+    pass  # TODO
+
+
 def ensure_username(name: str):
     """
     Forces an @ sign to be inserted at the beginning of the passed `name`
     :param name: A telegram username
     """
-    return '@' + name.lstrip('@')
+    return '@' + ensure_no_at_sign(name)
+
+
+def ensure_no_at_sign(name: str):
+    return name.lstrip('@')
