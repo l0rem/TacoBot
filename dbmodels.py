@@ -1,6 +1,11 @@
 from peewee import *
+from playhouse.db_url import connect
+from decouple import config
 
-db = SqliteDatabase('taco_base.db')                                                                # opening/creating DB
+
+db_proxy = Proxy()
+db = connect(config("DATABASE_URL", cast=str), autorollback=True)
+db_proxy.initialize(db)
 
 
 class Chats(Model):                                                        # chats-model is here for future updates only

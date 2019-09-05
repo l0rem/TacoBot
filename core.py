@@ -1,7 +1,6 @@
 from telegram.ext import Updater
 import logging
 from decouple import config
-import os
 
 from handlers.basic import help_handler, start_handler
 from handlers.leaderboards import taco_top_handler, my_tacos_handler
@@ -31,7 +30,7 @@ if __name__ == '__main__':                                                      
     dp.add_handler(init_taco_handler)
     dp.add_handler(my_tacos_handler)
     dp.add_handler(taco_top_handler)
-    dp.add_handler(taco_mention_handler)
+    #dp.add_handler(taco_mention_handler)
 
     if env == 'dev':
         upd.start_polling()

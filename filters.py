@@ -7,6 +7,7 @@ from tools import ensure_username
 
 bot_username = ensure_username(config('BOT_USERNAME', default='TacoBot'))
 
+
 class FilterReply(BaseFilter):                                                                      # filter for replies
     def filter(self, message):
         return message.reply_to_message is not None

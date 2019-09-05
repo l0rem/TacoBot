@@ -57,30 +57,21 @@ def taco_top_callback(update, context_):
     chat = Chats.get(Chats.cid == cid)
     tacos = Tacos.get(Tacos.chat == chat.id)
 
-    b = json.loads(tacos.taco_balance)
+    balances = json.loads(tacos.taco_balance)
 
-    if len(b) == 0:  # in case tacos-table is empty
+    if len(balances) == 0:                                                                # in case tacos-table is empty
         update.message.reply_text(empty_top_phrase,
                                   parse_mode=ParseMode.HTML)
         return
 
-    balances = list()
-    for balance in b.keys():
-        balances.append([balance, b.get(balance)])
-
     top = list()
 
-    while len(balances) > 0 and len(top) < 5:  # classical sort by value
-        mx_value = -1
-        # TODO: mx_user might be reference before assignment
-        for k in range(len(balances)):
-            if balances[k][1] >= mx_value:
-                mx_user = k
-        top.append(balances[mx_user])
-        del balances[mx_user]
-
-    for user in top:  # resolving usernames for top-table
-        user[0] = resolve_name(user[0])
+    while len(balances) > 0 and len(top) < 5:
+        top_user = max(balances)
+        top_uid = top_user.keys()[0]
+        username = resolve_name(top_uid)
+        top.append([username, balances.get(top_uid)])
+        del balances[top_uid]
 
     formatted_top = ''
     for user in top:
