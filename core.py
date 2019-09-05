@@ -1,10 +1,12 @@
 from telegram.ext import Updater
-from handlers import start_handler, help_handler, chat_reply_handler, new_chat_handler, self_kick_handler,\
-    init_taco_handler, my_tacos_handler, taco_top_handler
 import logging
 from decouple import config
 import os
 
+from handlers.basic import help_handler, start_handler
+from handlers.leaderboards import taco_top_handler, my_tacos_handler
+from handlers.setup import init_taco_handler, self_kick_handler, new_chat_handler
+from handlers.tacotransfers import chat_reply_handler
 
 bot_token = config('BOT_TOKEN', default='token')
 
@@ -12,7 +14,7 @@ webhook_url = config('WEBHOOK_URL', default='url')
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',                   # logging > console
-                    level=logging.DEBUG)
+                    level=logging.getLevelName(config('LOG_LEVEL', default='DEBUG')))
 
 upd = Updater(bot_token,                                                                   # creating updater/dispatcher
               use_context=True)
@@ -38,5 +40,6 @@ if __name__ == '__main__':                                                      
 
         upd.bot.set_webhook(webhook_url + bot_token)         # you obviously need to change this url
 
+    logging.info("Ready and listening for updates...")
     upd.idle()
 
