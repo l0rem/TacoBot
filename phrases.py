@@ -28,7 +28,7 @@ data_deleted_phrase = '<b>I got kicked from {}, so data about user\'s tacos got 
 chat_enabled_phrase = '<b>Thanks!</b>\n\nFrom this moment I\'m counting <i> all </i> tacos for <i> all </i> members' \
                       ' in this chat. You can share tacos by replying to other user\'s messages with taco-emoji' \
                       ' ({}) or by mentioning user(@username) in a message with taco.\n<b>Every user gets</b>' \
-                      '<code> {} <b>tacos.</b>\n\n{}\n\n<code>P.S. Again, only if you gave me access to' \
+                      '<code> {} </code><b>tacos.</b>\n\n{}\n\n<code>P.S. Again, only if you gave me access to' \
                       ' messages</code>\U00002764'.format(taco_emoji,
                                                           default_taco_amount,
                                                           help_phrase)
