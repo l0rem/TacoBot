@@ -97,10 +97,7 @@ def give_tacos(update: Update, sender: User, receiver: Union[User, ChatMember], 
 def chat_reply_callback(update: Update, context: CallbackContext):
     """ callback for taco-transfer """
 
-    cid = get_cid(update)
     store_name(update)
-
-    chat = Chats.get(Chats.cid == cid)
 
     sender: User = update.effective_message.from_user
     receiver: User = update.effective_message.reply_to_message.from_user

@@ -1,3 +1,8 @@
+from decouple import config
+
+
+default_taco_amount = config('DEFAULT_TACOS', default=50, cast=int)
+
 taco_emoji = '\U0001F32E'
 
 start_phrase = '<b>Hello, my name is TacoBot and my sole purpose is to help you spread appreciation, celebrate, and' \
@@ -21,9 +26,11 @@ data_deleted_phrase = '<b>I got kicked from {}, so data about user\'s tacos got 
                       ' having me in your chat - feel free to add me again later.'
 
 chat_enabled_phrase = '<b>Thanks!</b>\n\nFrom this moment I\'m counting <i> all </i> tacos for <i> all </i> members' \
-                      ' in this chat. You can share tacos by replying to other user\'s messages with taco-emoji ({})' \
-                      ' <b>Every user gets 50 tacos.</b>\n\n{}\n\n<code>P.S. Again, only if you gave me access to' \
+                      ' in this chat. You can share tacos by replying to other user\'s messages with taco-emoji' \
+                      ' ({}) or by mentioning user(@username) in a message with taco.\n<b>Every user gets</b>' \
+                      '<code> {} <b>tacos.</b>\n\n{}\n\n<code>P.S. Again, only if you gave me access to' \
                       ' messages</code>\U00002764'.format(taco_emoji,
+                                                          default_taco_amount,
                                                           help_phrase)
 
 no_bots_allowed_phrase = '<b>Sorry, but bots can\'t receive your tacos :(</b>\n\nI don\'t even think, that they can eat' \
