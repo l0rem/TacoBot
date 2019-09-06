@@ -36,15 +36,13 @@ def self_kick_callback(update, context):
     cid = get_cid(update)
 
     chat = Chats.select().where(Chats.cid == cid)
-
     if chat.exists():
-        chat = chat.get()
         invited_by = chat.invited_by
+        chat.get().delete_instance()
 
-        tacos = Tacos.select().where(Tacos.chat == chat.id)
+        tacos = Tacos.select().where(Tacos.chat == cid)
         if tacos.exists():
-            Tacos.get(Tacos.chat == chat.id).delete_instance()
-        chat.delete_instance()
+            tacos.get().delete_instance()
 
         try:
             chat_title = update.effective_message.chat.title
