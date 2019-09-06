@@ -23,6 +23,7 @@ From _local machine_:</br>
 
 Again _on VPS_:</br>
 8. `dokku letsencrypt [APP-NAME]` (requires [letsencrypt plugin](https://github.com/dokku/dokku-letsencrypt))</br>
+9. `dokku config:set --no-restart [APP-NAME] DOKKU_LETSENCRYPT_EMAIL=[E-MAIL]`</br>
 9. `dokku proxy:ports-set [APP-NAME] https:443:8080`
 
 ## Usage
