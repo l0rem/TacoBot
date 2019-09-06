@@ -11,6 +11,9 @@ Assuming Dokku, SSH into your _VPS with DOKKU installed_ on it and:
 2. `dokku config:set --no-restart [APP-NAME] BOT_TOKEN=[YOUR-BOT-TOKEN]`
 3. `dokku config:set --no-restart [APP-NAME] WEBHOOK_URL=[YOUR-WEBHOOK-URL]`
 4. `dokku config:set --no-restart [APP-NAME] ENV=prod`
+5. `dokku postgres:create [DB-NAME]` (requires [postgres plugin](https://github.com/dokku/dokku-postgres))
+6. `doku postgres:link [DB-NAME] [APP-NAME]`
+
 
 From _local machine_:</br>
 4. `git init`</br>
@@ -19,7 +22,7 @@ From _local machine_:</br>
 7. `git push dokku master`
 
 Again _on VPS_:</br>
-8. `dokku letsencrypt [APP-NAME]` (requires letsencrypt plugin)</br>
+8. `dokku letsencrypt [APP-NAME]` (requires [letsencrypt plugin](https://github.com/dokku/dokku-letsencrypt))</br>
 9. `dokku proxy:ports-set [APP-NAME] https:443:8080`
 
 ## Usage
