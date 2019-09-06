@@ -41,7 +41,8 @@ if __name__ == '__main__':
                           port=8080,
                           url_path=bot_token)
 
-        upd.bot.set_webhook(webhook_url + bot_token)         
+        upd.bot.set_webhook(webhook_url + bot_token)
+
 
     logging.info("Ready and listening for updates...")
     upd.idle()
