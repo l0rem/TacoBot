@@ -27,7 +27,7 @@ from tools import store_name, get_cid, ensure_no_at_sign, ensure_username
 default_taco_amount = config('DEFAULT_TACOS', default=50, cast=int)
 
 
-def give_tacos(update: Update, sender: User, receiver: Union[User, ChatMember], amount: int):
+def give_tacos(update: Update, sender: User, receiver: Union[User, ChatMember]):
     receiver: User = receiver.user if isinstance(receiver, ChatMember) else receiver
     cid = get_cid(update)
 
@@ -60,14 +60,14 @@ def give_tacos(update: Update, sender: User, receiver: Union[User, ChatMember], 
 
     if tacos.taco_balance is None:  # initialising/restoring user-balances
         amounts = dict()
-        amounts.update({sender_id: amount})
-        amounts.update({receiver_id: amount})
+        amounts.update({sender_id: default_taco_amount})
+        amounts.update({receiver_id: default_taco_amount})
     else:
         amounts = json.loads(tacos.taco_balance)
         if sender_id not in amounts.keys():
-            amounts.update({sender_id: amount})
+            amounts.update({sender_id: default_taco_amount})
         if receiver_id not in amounts.keys():
-            amounts.update({receiver_id: amount})
+            amounts.update({receiver_id: default_taco_amount})
 
     if tacos_sent > amounts.get(sender_id):  # can't send more than you have
         update.message.reply_text(balance_low_phrase, parse_mode=ParseMode.HTML)
@@ -102,7 +102,7 @@ def chat_reply_callback(update: Update, context: CallbackContext):
     sender: User = update.effective_message.from_user
     receiver: User = update.effective_message.reply_to_message.from_user
 
-    give_tacos(update, sender, receiver, default_taco_amount)
+    give_tacos(update, sender, receiver)
 
 
 chat_reply_handler = MessageHandler(
@@ -134,13 +134,12 @@ def taco_mention_callback(update: Update, context: CallbackContext):
 
     sender: User = update.effective_message.from_user
     receiver_username: str = ensure_no_at_sign(mentioned_users[0])
-    amount = count_tacos(message)
 
     try:
         receiver_db_entity: Usernames = Usernames.select().where(fn.lower(Usernames.username) == receiver_username).get()
         # TODO resolve_uid(username)
         receiver: User = context.bot.get_chat_member(cid, receiver_db_entity.uid)
-        give_tacos(update, sender, receiver, amount)
+        give_tacos(update, sender, receiver)
     except DoesNotExist:
 
         update.message.reply_text(user_not_present_phrase.format(ensure_username(receiver_username)),
@@ -151,8 +150,5 @@ taco_mention_handler = MessageHandler(
     callback=taco_mention_callback,
     filters=Filters.group
     & filter_taco
-    & (
-        Filters.entity(MessageEntity.MENTION)
-        | Filters.entity(MessageEntity.TEXT_MENTION)
-    ),
+    & Filters.entity(MessageEntity.MENTION)
 )
