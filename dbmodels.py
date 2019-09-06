@@ -9,8 +9,8 @@ db_proxy.initialize(db)
 
 
 class Chats(Model):                                                        # chats-model is here for future updates only
-    cid = IntegerField()
-    invited_by = IntegerField()
+    cid = BigIntegerField()
+    invited_by = BigIntegerField()
 
     class Meta:
         database = db
@@ -21,7 +21,7 @@ if not Chats.table_exists():                                                    
 
 
 class Tacos(Model):                                                 # taco-model stores balances and chat-related things
-    chat = IntegerField()
+    chat = BigIntegerField()
     taco_balance = TextField(null=True,
                              default='{}')
 
@@ -34,7 +34,7 @@ if not Tacos.table_exists():                                                    
 
 
 class Usernames(Model):                                                       # username-model is here only for /tacotop
-    uid = IntegerField()
+    uid = BigIntegerField()
     name = CharField()
     username = CharField()
 
