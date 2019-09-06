@@ -37,8 +37,9 @@ def self_kick_callback(update, context):
 
     chat = Chats.select().where(Chats.cid == cid)
     if chat.exists():
+        chat = chat.get()
         invited_by = chat.invited_by
-        chat.get().delete_instance()
+        chat.delete_instance()
 
         tacos = Tacos.select().where(Tacos.chat == cid)
         if tacos.exists():
