@@ -6,7 +6,7 @@ from handlers.leaderboards import taco_top_handler, my_tacos_handler
 from handlers.setup import self_kick_handler, new_chat_handler
 from handlers.tacotransfers import chat_reply_handler, taco_mention_handler
 
-env = config('ENV', default='dev')
+env = config('ENV', default='DEV')
 
 bot_token = config('BOT_TOKEN', default='token')
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     dp.add_handler(taco_top_handler)
     dp.add_handler(taco_mention_handler)
 
-    if env == 'dev':
+    if env == 'DEV':
         upd.start_polling()
     else:
 
