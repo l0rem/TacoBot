@@ -20,7 +20,7 @@ no_init_phrase = '<b>This chat is not enabled for me!</b>\n\nUser, who invited m
 data_deleted_phrase = '<b>I got kicked from {}, so data about user\'s tacos got deleted!</b>\n\nHuge thanks for' \
                       ' having me in your chat - feel free to add me again later.'
 
-chat_enabled_phrase = '<b>Thanks!</b>\n\nFrom this moment I\'m counting <i>all</i> tacos for <i>all</i> members' \
+chat_enabled_phrase = '<b>Thanks!</b>\n\nFrom this moment I\'m counting <i> all </i> tacos for <i> all </i> members' \
                       ' in this chat. You can share tacos by replying to other user\'s messages with taco-emoji ({})' \
                       ' <b>Every user gets 50 tacos.</b>\n\n{}\n\n<code>P.S. Again, only if you gave me access to' \
                       ' messages</code>\U00002764'.format(taco_emoji,
@@ -56,5 +56,9 @@ taco_top_phrase = '<b>Here are the top-{} tacoers in this chat!</b>\n\n{}'
 empty_top_phrase = '<b>Omg, there are no taco-lovers in this group!\U0001F47A\U0001F47A\U0001F47A</b>\n\nGo ahead and' \
                    ' reply to someone\'s message with {} ASAP!!!!'.format(taco_emoji)
 
+only_one_receiver_phrase = '<b>Sorry, but there can be only one taco-receiver \U0001F61B</b>\n\nWhy not to split this' \
+                           ' into two separate taco-transactions? \U0001F914'
 
+user_not_present_phrase = '<b>Hmm, does </b>{}<b> even exist?</b>\n\nCould (s)he send a message in this chat, so that' \
+                          ' we can shake our virtual hands? \U0001F917'
 

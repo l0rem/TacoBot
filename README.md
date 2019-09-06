@@ -10,6 +10,7 @@ Assuming Dokku, SSH into your _VPS with DOKKU installed_ on it and:
 1. `dokku apps:create [APP-NAME]`
 2. `dokku config:set --no-restart [APP-NAME] BOT_TOKEN=[YOUR-BOT-TOKEN]`
 3. `dokku config:set --no-restart [APP-NAME] WEBHOOK_URL=[YOUR-WEBHOOK-URL]`
+4. `dokku config:set --no-restart [APP-NAME] ENV=prod`
 
 From _local machine_:
 4. `git init`

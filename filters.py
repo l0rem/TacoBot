@@ -5,7 +5,7 @@ from dbmodels import Chats, Tacos
 from phrases import taco_emoji
 from tools import ensure_username
 
-bot_username = ensure_username(config('BOT_USERNAME', default='TacoBot'))
+bot_username = ensure_username(config('BOT_USERNAME', default='HeyTacoBot'))
 
 
 class FilterReply(BaseFilter):                                                                      # filter for replies
@@ -39,7 +39,8 @@ class FilterSelfKicked(BaseFilter):                                   # filter f
     def filter(self, message):
         if message.left_chat_member is None:
             return False
-        if ensure_username(message.left_chat_member.username) == bot_username:
+
+        if ensure_username(message.left_chat_member.username).lower() == bot_username.lower():
             return True
         return False
 
@@ -65,3 +66,11 @@ class FilterInit(BaseFilter):                                             # filt
 
 
 filter_init = FilterInit()
+
+
+class FilterNewChat(BaseFilter):                                          # filter for group, that has tacos-field in DB
+    def filter(self, message):
+        return not Chats.select().where(Chats.cid == message.chat.id).exists()
+
+
+filter_new_chat = FilterNewChat()

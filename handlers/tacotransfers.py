@@ -1,14 +1,14 @@
 import json
 import re
 from typing import List, Dict, Union
-
+from decouple import config
 from peewee import fn
+from peewee import DoesNotExist
 from telegram import ParseMode, MessageEntity, Update, Message, User, ChatMember
 from telegram.ext import Filters, MessageHandler, CallbackContext
 
 from dbmodels import Tacos, Chats, Usernames
 from filters import filter_taco, filter_reply
-from handlers.setup import default_amount
 from phrases import (
     taco_transfer_phrase,
     taco_transfer_comment_medium,
@@ -18,20 +18,20 @@ from phrases import (
     taco_emoji,
     self_tacoing_phrase,
     no_bots_allowed_phrase,
-    no_init_phrase,
+    only_one_receiver_phrase,
+    user_not_present_phrase
 )
 from tacotools import count_tacos
-from tools import store_name, get_cid, ensure_no_at_sign
+from tools import store_name, get_cid, ensure_no_at_sign, ensure_username
+
+default_taco_amount = config('DEFAULT_TACOS', default=50, cast=int)
 
 
 def give_tacos(update: Update, sender: User, receiver: Union[User, ChatMember], amount: int):
     receiver: User = receiver.user if isinstance(receiver, ChatMember) else receiver
-    chat = Chats.select().where(Chats.cid == update.effective_chat.id)
-    if not chat.exists():
-        update.effective_message.reply_text(no_init_phrase, parse_mode=ParseMode.HTML)
-        return
+    cid = get_cid(update)
 
-    tacos = Tacos.get(Tacos.chat == chat.get())
+    tacos = Tacos.get(Tacos.chat == cid)
 
     if receiver.username is None:
         first_name = receiver.first_name
@@ -55,8 +55,8 @@ def give_tacos(update: Update, sender: User, receiver: Union[User, ChatMember], 
         return
 
     tacos_sent = len(
-        re.findall("{}".format(taco_emoji), update.effective_message.text)
-    )  # counting tacos
+        re.findall(taco_emoji, update.effective_message.text)
+    )
 
     if tacos.taco_balance is None:  # initialising/restoring user-balances
         amounts = dict()
@@ -75,7 +75,7 @@ def give_tacos(update: Update, sender: User, receiver: Union[User, ChatMember], 
 
     amounts.update(
         {sender_id: amounts.get(sender_id) - tacos_sent}
-    )  # actual taco-transfer
+    )
     amounts.update({receiver_id: amounts.get(receiver_id) + tacos_sent})
 
     if tacos_sent < 3:
@@ -105,7 +105,7 @@ def chat_reply_callback(update: Update, context: CallbackContext):
     sender: User = update.effective_message.from_user
     receiver: User = update.effective_message.reply_to_message.from_user
 
-    give_tacos(update, sender, receiver, default_amount)
+    give_tacos(update, sender, receiver, default_taco_amount)
 
 
 chat_reply_handler = MessageHandler(
@@ -123,22 +123,31 @@ def taco_mention_callback(update: Update, context: CallbackContext):
     mentions: Dict[MessageEntity, str] = message.parse_entities(
         [MessageEntity.MENTION, MessageEntity.TEXT_MENTION]
     )
-    mentioned_users: List[str] = [m for m in mentions.values()]
+    mentioned_users: List[str] = [m.lower() for m in mentions.values()]
+
+    mentioned_users = list(set(mentioned_users))   # removing duplicates
 
     if len(mentioned_users) > 1:
-        # TODO: factor out string
+
         update.message.reply_text(
-            "Sorry, you can only give tacos to <b>one</b> person."
+            only_one_receiver_phrase,
+            parse_mode=ParseMode.HTML
         )
+        return
 
     sender: User = update.effective_message.from_user
     receiver_username: str = ensure_no_at_sign(mentioned_users[0])
     amount = count_tacos(message)
 
-    receiver_db_entity: Usernames = Usernames.select().where(fn.lower(Usernames.username) == receiver_username).get()
+    try:
+        receiver_db_entity: Usernames = Usernames.select().where(fn.lower(Usernames.username) == receiver_username).get()
+        # TODO resolve_uid(username)
+        receiver: User = context.bot.get_chat_member(cid, receiver_db_entity.uid)
+        give_tacos(update, sender, receiver, amount)
+    except DoesNotExist:
 
-    receiver: User = context.bot.get_chat_member(update.effective_chat.id, receiver_db_entity.uid)
-    give_tacos(update, sender, receiver, amount)
+        update.message.reply_text(user_not_present_phrase.format(ensure_username(receiver_username)),
+                                  parse_mode=ParseMode.HTML)
 
 
 taco_mention_handler = MessageHandler(

@@ -36,7 +36,8 @@ help_handler = CommandHandler('help',
 
 
 def store_names_callback(update, context):
-    print('storing name...')
+    """ stores names for each user, if not already present in DB"""
+
     store_name(update)
 
 

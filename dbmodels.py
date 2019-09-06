@@ -4,7 +4,7 @@ from decouple import config
 
 
 db_proxy = Proxy()
-db = connect(config("DATABASE_URL", cast=str), autorollback=True)
+db = connect(config("DATABASE_URL", default='sqlite:///tacoDB.sqlite', cast=str), autorollback=True)
 db_proxy.initialize(db)
 
 

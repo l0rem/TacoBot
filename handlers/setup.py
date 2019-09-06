@@ -1,14 +1,33 @@
 from telegram import ParseMode
 from telegram.error import Unauthorized
-from telegram.ext import CommandHandler, MessageHandler, Filters
+from telegram.ext import MessageHandler, Filters
 
 from dbmodels import Chats, Tacos
-from filters import filter_added, filter_self_kicked, filter_invitor
-from phrases import new_group_phrase, data_deleted_phrase, \
-    chat_enabled_phrase
+from filters import filter_self_kicked, filter_new_chat
+from phrases import data_deleted_phrase, chat_enabled_phrase
 from tools import get_cid, store_name
 
-default_amount = 50  # default amount of tacos, that every user gets on start
+
+def new_chat_callback(update, context):
+    """ triggers when bot gets added to new chat """
+
+    cid = get_cid(update)
+    store_name(update)
+
+    invited_by = update.effective_message.from_user
+
+    Chats.create(cid=cid,
+                 invited_by=invited_by.id)
+
+    Tacos.create(chat=cid)
+
+    context.bot.send_message(cid,
+                             chat_enabled_phrase,
+                             parse_mode=ParseMode.HTML)
+
+
+new_chat_handler = MessageHandler(Filters.group & filter_new_chat & ~filter_self_kicked,
+                                  callback=new_chat_callback)
 
 
 def self_kick_callback(update, context):
@@ -38,43 +57,3 @@ def self_kick_callback(update, context):
 
 self_kick_handler = MessageHandler(Filters.group & filter_self_kicked,
                                    callback=self_kick_callback)
-
-
-def init_taco_callback(update, context):
-    """ creates Taco-table after permission """
-
-    cid = get_cid(update)
-
-    chat = Chats.get(Chats.cid == cid)
-    Tacos.create(chat=chat.id)
-
-    context.bot.send_message(cid,
-                             chat_enabled_phrase,
-                             parse_mode=ParseMode.HTML)
-
-
-init_taco_handler = CommandHandler(command='inittaco',
-                                   callback=init_taco_callback,
-                                   filters=Filters.group & filter_invitor)
-
-
-def new_chat_callback(update, context):
-    """ triggers when bot gets added to new chat """
-
-    cid = get_cid(update)
-    store_name(update)
-
-    invited_by = update.effective_message.from_user
-
-    name = store_name(update)
-
-    Chats.create(cid=cid,
-                 invited_by=invited_by.id)
-
-    context.bot.send_message(cid,
-                             new_group_phrase.format(name),
-                             parse_mode=ParseMode.HTML)
-
-
-new_chat_handler = MessageHandler(Filters.group & filter_added,
-                                  callback=new_chat_callback)
