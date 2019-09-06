@@ -1,6 +1,5 @@
 from telegram import ParseMode
 from telegram.ext import Filters, CommandHandler, MessageHandler
-
 from phrases import start_phrase, help_phrase
 from tools import get_uid, store_name
 

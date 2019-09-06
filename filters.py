@@ -24,17 +24,6 @@ class FilterTaco(BaseFilter):                                                   
 filter_taco = FilterTaco()
 
 
-class FilterAdded(BaseFilter):                                         # filter for message, that bot was added to group
-    def filter(self, message):
-        for member in message.new_chat_members:
-            if ensure_username(member.username).lower() == bot_username.lower():
-                return True
-        return False
-
-
-filter_added = FilterAdded()
-
-
 class FilterSelfKicked(BaseFilter):                                   # filter for update, that bot was kicked from chat
     def filter(self, message):
         if message.left_chat_member is None:
@@ -46,16 +35,6 @@ class FilterSelfKicked(BaseFilter):                                   # filter f
 
 
 filter_self_kicked = FilterSelfKicked()
-
-
-class FilterInvitor(BaseFilter):                               # filter for message, that comes from invitor (/inittaco)
-    def filter(self, message):
-        if message.from_user.id == Chats.get(Chats.cid == message.chat_id).invited_by:
-            return True
-        return False
-
-
-filter_invitor = FilterInvitor()
 
 
 class FilterInit(BaseFilter):                                             # filter for group, that has tacos-field in DB

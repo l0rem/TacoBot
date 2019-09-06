@@ -1,6 +1,6 @@
 # TacoBot for Telegram
 
-This is a port of HeyTacoBot (Slack only) for Telegram.
+This is a port of HeyTaco Bot (Slack) for Telegram.
 
 ## Installation
 
