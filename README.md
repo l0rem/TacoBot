@@ -12,13 +12,13 @@ Assuming Dokku, SSH into your _VPS with DOKKU installed_ on it and:
 3. `dokku config:set --no-restart [APP-NAME] WEBHOOK_URL=[YOUR-WEBHOOK-URL]`
 4. `dokku config:set --no-restart [APP-NAME] ENV=prod`
 
-From _local machine_:
+From _local machine_:</br>
 4. `git init`
 5. `git clone git@github.com:l0rem/TacoBot.git`
 6. `git remote add dokku dokku@dokku.me:[APP-NAME]`
 7. `git push dokku master`
 
-Again _on VPS_:
+Again _on VPS_:</br>
 8. `dokku letsencrypt [APP-NAME]` (requires letsencrypt plugin)
 9. `dokku proxy:ports-set [APP-NAME] https:443:8080`
 
