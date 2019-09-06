@@ -16,14 +16,15 @@ Assuming Dokku, SSH into your _VPS with DOKKU installed_ on it and:
 
 
 From _local machine_:</br>
-4. `git init`</br>
-5. `git clone git@github.com:l0rem/TacoBot.git`</br>
-6. `git remote add dokku dokku@dokku.me:[APP-NAME]`</br>
-7. `git push dokku master`
+7. `git init`</br>
+8. `git clone git@github.com:l0rem/TacoBot.git`</br>
+9. `git remote add dokku dokku@dokku.me:[APP-NAME]`</br>
+10. `git push dokku master`
 
 Again _on VPS_:</br>
-8. `dokku letsencrypt [APP-NAME]` (requires [letsencrypt plugin](https://github.com/dokku/dokku-letsencrypt))</br>
-9. `dokku proxy:ports-set [APP-NAME] https:443:8080`
+11. `dokku config:set --no-restart [APP-NAME] DOKKU_LETSENCRYPT_EMAIL=[E-MAIL]`</br>
+12. `dokku letsencrypt [APP-NAME]` (requires [letsencrypt plugin](https://github.com/dokku/dokku-letsencrypt))</br>
+13. `dokku proxy:ports-set [APP-NAME] https:443:8080`
 
 ## Usage
 
