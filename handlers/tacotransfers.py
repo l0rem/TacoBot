@@ -1,10 +1,8 @@
 import json
 import re
 from decouple import config
-from peewee import fn
-from peewee import DoesNotExist
 from pyrogram import Filters, MessageHandler
-from dbmodels import Tacos, Usernames
+from dbmodels import Tacos
 from filters import filter_taco, filter_mention
 from phrases import (
     taco_transfer_phrase,
@@ -136,16 +134,19 @@ def taco_mention_callback(bot, message):
     receiver_username: str = ensure_no_at_sign(mentioned_users[0])
 
     try:
-        receiver_db_entity = Usernames.select().where(fn.lower(Usernames.username) == receiver_username).get()
-        # TODO resolve_uid(username)
-        receiver = bot.get_chat_member(cid, receiver_db_entity.uid).user
-        give_tacos(bot, message, sender, receiver)
-    except DoesNotExist:
+        receiver = bot.get_chat_member(chat_id=cid,
+                                       user_id=receiver_username).user
 
+    except Exception:
+        """ here should be except UserNotParticipant, but it still raises this exception """
         bot.send_message(chat_id=cid,
                          text=user_not_present_phrase.format(ensure_username(receiver_username)),
                          reply_to_message_id=get_mid(message),
                          parse_mode='html')
+
+        return
+
+    give_tacos(bot, message, sender, receiver)
 
 
 taco_mention_handler = MessageHandler(

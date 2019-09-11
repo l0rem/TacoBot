@@ -19,9 +19,6 @@ new_group_phrase = '<b>Sup, chat!</b>\n\nThanks for adding me :3 You can find ou
                    ' allow me to work with this group.\n\n<code>P.S. Don\'t forget to give me admin rights, so that I' \
                    ' will be able to access messages and count tacos for you</code>\U00002764'
 
-no_init_phrase = '<b>This chat is not enabled for me!</b>\n\nUser, who invited me, needs to send /inittaco , in order' \
-                 ' to allow me counting tacos for this chat.'
-
 data_deleted_phrase = '<b>I got kicked from {}, so data about user\'s tacos got deleted!</b>\n\nHuge thanks for' \
                       ' having me in your chat - feel free to add me again later.'
 
@@ -33,16 +30,16 @@ chat_enabled_phrase = '<b>Thanks!</b>\n\nFrom this moment I\'m counting <i> all 
                                                           default_taco_amount,
                                                           help_phrase)
 
-no_bots_allowed_phrase = '<b>Sorry, but bots can\'t receive your tacos :(</b>\n\nI don\'t even think, that they can eat' \
-                         ' human-food yet \U0001F914\U0001F914\U0001F914'
+no_bots_allowed_phrase = '<b>Sorry, but bots can\'t receive your tacos :(</b>\n<code>I don\'t even think, that they' \
+                         ' can eat human-food yet \U0001F914\U0001F914\U0001F914</code>'
 
-self_tacoing_phrase = '<b>Why would you want to send these delicious tacos to yourself?..</b>\n\nYou are a' \
-                      ' really weird person \U0001F610'
+self_tacoing_phrase = '<b>Why would you want to send these delicious tacos to yourself?..</b>\n<code>You are a' \
+                      ' really weird person \U0001F610</code>'
 
-balance_low_phrase = '<b>Whoops... You ran out of tacos!</b>\n\nYou can probably start some crowdfunding page to get' \
-                     ' some tacos from your friends and other participants \U0001F643'
+balance_low_phrase = '<b>Whoops... You don\'t have enough tacos!</b>\n<code>You can probably start some crowdfunding' \
+                     ' page to get some tacos from your friends and other participants \U0001F643</code>'
 
-balance_phrase = '<b>You have</b> <code>{}</code> <b>tacos on your taco-balance.</b>\n\n{}'
+balance_phrase = '<b>You have</b> <code>{}</code> <b>tacos on your taco-balance.</b>\n<code>{}</code>'
 
 balance_comment_low = 'Where did all your tacos go?!! \U0001F47F\U0001F47F\U0001F47F'
 
@@ -50,22 +47,22 @@ balance_comment_medium = 'I guess, you dont gift much of your tacos... and so do
 
 balance_comment_high = 'WoW, I\'m impressed! How did you earn so many tacos? Are you trading crypto or what?\U0001F640'
 
-taco_transfer_phrase = '<b>Gave</b> <code>{}</code> <b>tacos to</b> {}<b>!</b>\n\n{}'
+taco_transfer_phrase = '<b>Gave</b> <code>{}</code> <b>tacos to</b> {}<b>!</b>\n<code>{}</code>'
 
 taco_transfer_comment_low = 'Why didn\'t you share more tacos tho?\U0001F634'
 
-taco_transfer_comment_medium = '{} must be a good person! \U0001F63D'
+taco_transfer_comment_medium = '(S)He must be a good person! \U0001F63D'
 
 taco_transfer_comment_high = 'Do you owe him lots of money or what? \U0001F639'
 
-taco_top_phrase = '<b>Here are the top-{} tacoers in this chat!</b>\n\n{}'
+taco_top_phrase = '<b>Here are the top-{} taco-owners of this chat!</b>\n{}'
 
-empty_top_phrase = '<b>Omg, there are no taco-lovers in this group!\U0001F47A\U0001F47A\U0001F47A</b>\n\nGo ahead and' \
-                   ' reply to someone\'s message with {} ASAP!!!!'.format(taco_emoji)
+empty_top_phrase = '<b>Omg, there are no taco-lovers in this group!\U0001F47A\U0001F47A\U0001F47A</b>\n<code>Go ahead' \
+                   ' and reply to someone\'s message with {} ASAP!!!!</code>'.format(taco_emoji)
 
-only_one_receiver_phrase = '<b>Sorry, but there can be only one taco-receiver \U0001F61B</b>\n\nWhy not to split this' \
-                           ' into two separate taco-transactions? \U0001F914'
+only_one_receiver_phrase = '<b>Sorry, but there can be only one taco-receiver.</b>\n<code>Why not to split ' \
+                           'this into two separate taco-transactions? \U0001F914</code>'
 
-user_not_present_phrase = '<b>Hmm, does </b>{}<b> even exist?</b>\n\nCould (s)he send a message in this chat, so that' \
-                          ' we can shake our virtual hands? \U0001F917'
+user_not_present_phrase = '<b>Am I a joke to you?</b>\n<code>This person is not a member of this chat (if this is a' \
+                          ' real person in first place)!</code>\U0001F927'
 

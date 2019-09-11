@@ -53,10 +53,6 @@ def resolve_name(uid):                                                          
         return uid
 
 
-def resolve_uid(username):
-    pass  # TODO
-
-
 def ensure_username(name: str):
     """
     Forces an @ sign to be inserted at the beginning of the passed `name`
