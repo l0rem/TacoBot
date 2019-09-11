@@ -1,28 +1,31 @@
-from telegram import Update
-
 from dbmodels import Usernames
 
 
-def get_uid(update: Update):
+def get_uid(message):
     """ this makes your life easier """
-    return update.effective_message.from_user.id
+    return message.from_user.id
 
 
-def get_cid(update: Update):
+def get_cid(message):
     """ this makes your life easier """
-    return update.effective_message.chat.id
+    return message.chat.id
 
 
-def store_name(update: Update):
+def get_mid(message):
+    """ this makes your life easier """
+    return message.message_id
+
+
+def store_name(message):
     """ this function is here only for /tacotop """
 
-    uid = get_uid(update)
+    uid = get_uid(message)
 
     username = Usernames.select().where(Usernames.uid == uid)
     if username.exists():
         return username.get().name
 
-    user = update.effective_message.from_user
+    user = message.from_user
     if user.username is None:
         username = None
         first_name = user.first_name

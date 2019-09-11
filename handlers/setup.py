@@ -1,39 +1,36 @@
-from telegram import ParseMode
-from telegram.error import Unauthorized
-from telegram.ext import MessageHandler, Filters
-
+from pyrogram import MessageHandler, Filters
 from dbmodels import Chats, Tacos
 from filters import filter_self_kicked, filter_new_chat
 from phrases import data_deleted_phrase, chat_enabled_phrase
-from tools import get_cid, store_name
+from chattools import get_cid, store_name
 
 
-def new_chat_callback(update, context):
+def new_chat_callback(bot, message):
     """ triggers when bot gets added to new chat """
 
-    cid = get_cid(update)
-    store_name(update)
+    cid = get_cid(message)
+    store_name(message)
 
-    invited_by = update.effective_message.from_user
+    invited_by = message.from_user
 
     Chats.create(cid=cid,
                  invited_by=invited_by.id)
 
     Tacos.create(chat=cid)
 
-    context.bot.send_message(cid,
-                             chat_enabled_phrase,
-                             parse_mode=ParseMode.HTML)
+    bot.send_message(cid,
+                     chat_enabled_phrase,
+                     parse_mode='html')
 
 
-new_chat_handler = MessageHandler(Filters.group & filter_new_chat & ~filter_self_kicked,
-                                  callback=new_chat_callback)
+new_chat_handler = MessageHandler(callback=new_chat_callback,
+                                  filters=Filters.group & ~filter_new_chat & ~filter_self_kicked)
 
 
-def self_kick_callback(update, context):
+def self_kick_callback(bot, message):
     """ if bot gets kicked it erases all data for chat """
 
-    cid = get_cid(update)
+    cid = get_cid(message)
 
     chat = Chats.select().where(Chats.cid == cid)
     if chat.exists():
@@ -45,14 +42,11 @@ def self_kick_callback(update, context):
         if tacos.exists():
             tacos.get().delete_instance()
 
-        try:
-            chat_title = update.effective_message.chat.title
-            context.bot.send_message(invited_by,
-                                     data_deleted_phrase.format(chat_title),
-                                     parse_mode=ParseMode.HTML)
-        except Unauthorized:
-            pass  # user deleted bot or didnt /start it
+        chat_title = message.chat.title
+        bot.send_message(invited_by,
+                         data_deleted_phrase.format(chat_title),
+                         parse_mode='html')
 
 
-self_kick_handler = MessageHandler(Filters.group & filter_self_kicked,
-                                   callback=self_kick_callback)
+self_kick_handler = MessageHandler(callback=self_kick_callback,
+                                   filters=Filters.group & Filters.left_chat_member & filter_self_kicked)

@@ -1,55 +1,45 @@
 from decouple import config
-from telegram import Message
-from telegram.ext import BaseFilter
-from dbmodels import Chats, Tacos
+from pyrogram import Filters
+from dbmodels import Chats
 from phrases import taco_emoji
-from tools import ensure_username
+from chattools import ensure_username, get_cid
 
 bot_username = ensure_username(config('BOT_USERNAME', default='HeyTacoBot'))
 
 
-class FilterReply(BaseFilter):                                                                      # filter for replies
-    def filter(self, message):
-        return message.reply_to_message is not None
+def filter_taco_(_, query):                                                           # filter for taco-emoji in message
+    if query.text is not None:
+        return taco_emoji in query.text
+    return False
 
 
-filter_reply = FilterReply()
+filter_taco = Filters.create(filter_taco_)
 
 
-class FilterTaco(BaseFilter):                                                         # filter for taco-emoji in message
-    def filter(self, message: Message):
-        return taco_emoji in message.text if message.text else False
-
-
-filter_taco = FilterTaco()
-
-
-class FilterSelfKicked(BaseFilter):                                   # filter for update, that bot was kicked from chat
-    def filter(self, message):
-        if message.left_chat_member is None:
-            return False
-
-        if ensure_username(message.left_chat_member.username).lower() == bot_username.lower():
-            return True
+def filter_self_kicked_(_, query):                                    # filter for update, that bot was kicked from chat
+    if query.left_chat_member is None:
         return False
+    if ensure_username(query.left_chat_member.username).lower() == bot_username.lower():
+        return True
+    return False
 
 
-filter_self_kicked = FilterSelfKicked()
+filter_self_kicked = Filters.create(filter_self_kicked_)
 
 
-class FilterInit(BaseFilter):                                             # filter for group, that has tacos-field in DB
-    def filter(self, message):
-        chat = Chats.get(Chats.cid == message.chat.id)
-        tacos = Tacos.select(Tacos.chat == chat.id)
-        return tacos.exists()
+def filter_new_chat_(_, query):                                           # filter for group, that has tacos-field in DB
+    return Chats.select().where(Chats.cid == get_cid(query)).exists()
 
 
-filter_init = FilterInit()
+filter_new_chat = Filters.create(filter_new_chat_)
 
 
-class FilterNewChat(BaseFilter):                                          # filter for group, that has tacos-field in DB
-    def filter(self, message):
-        return not Chats.select().where(Chats.cid == message.chat.id).exists()
+def filter_mention_(_, query):                                                      # filter for mention in text message
+    for entity in query.entities:
+        if entity.type == 'mention':
+            return True
+    return False
 
 
-filter_new_chat = FilterNewChat()
+filter_mention = Filters.create(filter_mention_)
+
