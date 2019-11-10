@@ -12,7 +12,7 @@ api_id = config('API_ID', default='api_id')
 api_hash = config('API_HASH', default='api_hash')
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.getLevelName(config('LOG_LEVEL', default='DEBUG')))
+                    level=logging.getLevelName(config('LOG_LEVEL', default='INFO')))
 
 bot = Client(session_name='TacoBot',
              api_id=api_id,
