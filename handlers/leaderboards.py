@@ -76,14 +76,14 @@ def taco_top_callback(bot, message):
 
     formatted_top = ''
     for user in top:
-        if "@" in user[1]:
-            user_link = "https://t.me/{}".format(user[0].replace("@", ""))
+        if "@" in user[0]:
+            user_link = "https://t.me/{}".format(user[0][1:])
         else:
             user_link = "tg://user?id={}".format(user[0])
 
         formatted_top += '{}. <html href="{}">{}</html> - <code>{}</code> tacos!\n'.format(top.index(user) + 1,
                                                                     user_link,
-                                                                    user[0].replace("@", ""),
+                                                                    user[0][1:],
                                                                     user[1])
 
     bot.send_message(text=taco_top_phrase.format(len(top),
