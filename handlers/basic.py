@@ -132,8 +132,16 @@ def autohide_delay_callback(bot, message):
 
     clean_chat(chat.mids, chat.cid, bot, message)
 
-    user = bot.get_chat_member(chat_id=message.chat.id,
-                               user_id=message.from_user.id)
+    try:
+
+        user = bot.get_chat_member(chat_id=message.chat.id,
+                                   user_id=message.from_user.id)
+    except Exception as e:
+        print(e)
+        bot.send_message(chat_id=chat.cid,
+                         text='<b>An error occurred, please contact @Lor3m.</b>',
+                         parse_mode='html')
+        return
 
     if message.from_user.id == chat.invited_by or\
             user.status == 'administrator' or\

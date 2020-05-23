@@ -5,7 +5,7 @@ default_taco_amount = config('DEFAULT_TACOS', default=25, cast=int)
 
 taco_emoji = '\U0001F32E'
 
-start_phrase = '<b>Hello, my name is TacoBot_ and my sole purpose is to help you spread appreciation, celebrate, and' \
+start_phrase = '<b>Hello, my name is TacoBot and my sole purpose is to help you spread appreciation, celebrate, and' \
                ' have a little fun.</b>\n\nSimply add me to your group and you’ll be giving tacos in no time! You can' \
                ' also send me /help to read about my abilities :^)'
 

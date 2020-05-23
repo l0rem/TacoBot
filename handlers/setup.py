@@ -13,12 +13,15 @@ def new_chat_callback(bot, message):
         store_name(message.from_user)
 
     invited_by = message.from_user
+    if invited_by is None:
+        invited_by = -1
+    else:
+        invited_by = invited_by.id
 
     with db:
-
         Chats.create(
             cid=cid,
-            invited_by=invited_by.id)
+            invited_by=invited_by)
 
         Tacos.create(
             chat=cid)
