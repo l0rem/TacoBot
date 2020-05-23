@@ -1,0 +1,13 @@
+APScheduler==3.6.3
+colorama==0.4.3
+peewee==3.13.2
+peewee-db-evolve==3.7.3
+psycopg2-binary==2.8.5
+pyaes==1.6.1
+Pyrogram==0.16.0
+PySocks==1.7.0
+python-decouple==3.3
+pytz==2019.3
+six==1.14.0
+TgCrypto==1.2.0
+tzlocal==2.0.0
