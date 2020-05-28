@@ -1,7 +1,7 @@
 import re
 from decouple import config
 from pyrogram import Filters, MessageHandler, InlineKeyboardMarkup, InlineKeyboardButton
-from dbmodels import Tacos, Chats
+from dbmodels import Tacos, Chats, db
 import datetime
 from scheduler import sched
 from .basic import delete_message
@@ -271,10 +271,11 @@ taco_mention_handler = MessageHandler(
 
 
 def tacoinflator():
-    for chat in Tacos.select():
-        chat = chat.get()
-        tacos = chat.taco_balance
-        for user in tacos:
-            tacos.update({user: tacos.get(user) + default_taco_inflation_amount})
-        chat.taco_balance = tacos
-        chat.save()
+    with db:
+        for chat in Tacos.select():
+            chat = chat.get()
+            tacos = chat.taco_balance
+            for user in tacos:
+                tacos.update({user: tacos.get(user) + default_taco_inflation_amount})
+            chat.taco_balance = tacos
+            chat.save()
