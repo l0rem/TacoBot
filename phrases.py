@@ -51,7 +51,7 @@ taco_transfer_phrase = '<a href="{}">{}</a> <b>gave</b> <code>{}</code> <b>tacos
 
 taco_transfer_comment_low = 'Why didn\'t you share more tacos tho?\U0001F634'
 
-taco_transfer_comment_medium = '(S)He must be a good person! \U0001F63D'
+taco_transfer_comment_medium = 'They must be a good person! \U0001F63D'
 
 taco_transfer_comment_high = 'Do you owe him lots of money or what? \U0001F639'
 
